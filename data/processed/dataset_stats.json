@@ -1,0 +1,28 @@
+{
+  "seed_total": 15,
+  "seed_valid": 15,
+  "seed_dropped": 0,
+  "synth_total": 6453,
+  "synth_valid": 6453,
+  "synth_dropped": 0,
+  "train": 6130,
+  "val": {
+    "total": 335,
+    "seed": 12,
+    "synth": 323
+  },
+  "test": {
+    "total": 3,
+    "seed": 3,
+    "synth": 0
+  },
+  "labels": [
+    "O",
+    "B-PER",
+    "I-PER",
+    "B-ADDR",
+    "I-ADDR",
+    "B-NOTE",
+    "I-NOTE"
+  ]
+}

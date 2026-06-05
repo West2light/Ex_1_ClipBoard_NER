@@ -1,0 +1,855 @@
+
+API endpoint: http://localhost:8000/parse
+Test cases  : 65
+Layer       : all
+Debug       : False
+Log         : F:\Vin-AI\task01_fix\adds\output\view_outputs_20260605_173354_all.log
+
+========================================================================
+[P-01]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : Nguyễn Văn A, 0912345678, 45 Lê Lợi Q1 HCM, giao buổi sáng
+  STATUS: 200  (2064 ms)
+  {
+      "recipient_name": "Nguyễn Văn A",
+      "phone_number": "0912345678",
+      "address_raw": "45 Lê Lợi Q1 HCM",
+      "note": "giao buổi sáng",
+      "debug": null
+  }
+
+========================================================================
+[P-02]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : sdt: 0987654321 - địa chỉ: 12 Trần Hưng Đạo, Đống Đa, Hà Nội
+  STATUS: 200  (2039 ms)
+  {
+      "recipient_name": null,
+      "phone_number": "0987654321",
+      "address_raw": "12 Trần Hưng Đạo, Đống Đa, Hà Nội",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[P-03]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : chị Mai ơi giao cho mình nha, đang ở 88 Nguyễn Du
+  STATUS: 200  (2069 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "88 Nguyễn Du",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[P-04]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : Tên: Trần Bích Ngọc | ĐT: 0901 234 567 | Địa chỉ: Căn hộ 12B, Chung cư Sunrise, 90 Võ Văn Ngân, Thủ Đức | Ghi chú: gọi t  [...+8 chars]
+  STATUS: 200  (2072 ms)
+  {
+      "recipient_name": "Trần Bích Ngọc",
+      "phone_number": "0901234567",
+      "address_raw": "Căn hộ 12B, Chung cư Sunrise, 90 Võ Văn Ngân, Thủ Đức",
+      "note": "gọi trước 30p",
+      "debug": null
+  }
+
+========================================================================
+[P-05]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : order mới nè: 5 áo size M màu đen, ship cho Hùng, 0911222333, 22 Hai Bà Trưng
+  STATUS: 200  (2047 ms)
+  {
+      "recipient_name": "Hùng",
+      "phone_number": "0911222333",
+      "address_raw": "22 Hai Bà Trưng",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[P-06]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : không có địa chỉ, tên: Lan, sdt: 0999888777
+  STATUS: 422  (2064 ms)
+  {
+      "error": {
+          "code": "address_not_found",
+          "message": "A delivery address could not be resolved."
+      },
+      "debug": null
+  }
+
+========================================================================
+[P-07]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : 
+  STATUS: 400  (2058 ms)
+  {
+      "error": {
+          "code": "invalid_input",
+          "message": "Input text is required or malformed."
+      },
+      "debug": null
+  }
+
+========================================================================
+[P-08]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : +84 912 345 678
+  STATUS: 422  (2063 ms)
+  {
+      "error": {
+          "code": "address_not_found",
+          "message": "A delivery address could not be resolved."
+      },
+      "debug": null
+  }
+
+========================================================================
+[P-09]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : Lê Văn Đức, 0812456789, 50 Đinh Tiên Hoàng Q.Bình Thạnh - nhớ ghi "hàng dễ vỡ" lên kiện
+  STATUS: 200  (2068 ms)
+  {
+      "recipient_name": "Lê Văn Đức",
+      "phone_number": "0812456789",
+      "address_raw": "50 Đinh Tiên Hoàng Q.Bình Thạnh",
+      "note": "hàng dễ vỡ",
+      "debug": null
+  }
+
+========================================================================
+[P-10]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : Nguyễn Thị Hoa\n 0934567890\n 15 Lý Thường Kiệt, P.14, Q.10
+  STATUS: 200  (2064 ms)
+  {
+      "recipient_name": "Nguyễn Thị Hoa",
+      "phone_number": "0934567890",
+      "address_raw": "15 Lý Thường Kiệt, P.14, Q.10",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[PH-01]  layer=phone_extractor
+------------------------------------------------------------------------
+  INPUT : 0912 345 678
+  STATUS: 422  (2057 ms)
+  {
+      "error": {
+          "code": "address_not_found",
+          "message": "A delivery address could not be resolved."
+      },
+      "debug": null
+  }
+
+========================================================================
+[PH-02]  layer=phone_extractor
+------------------------------------------------------------------------
+  INPUT : 0912-345-678
+  STATUS: 422  (2062 ms)
+  {
+      "error": {
+          "code": "address_not_found",
+          "message": "A delivery address could not be resolved."
+      },
+      "debug": null
+  }
+
+========================================================================
+[PH-03]  layer=phone_extractor
+------------------------------------------------------------------------
+  INPUT : +84912345678
+  STATUS: 422  (2081 ms)
+  {
+      "error": {
+          "code": "address_not_found",
+          "message": "A delivery address could not be resolved."
+      },
+      "debug": null
+  }
+
+========================================================================
+[PH-04]  layer=phone_extractor
+------------------------------------------------------------------------
+  INPUT : 84912345678
+  STATUS: 422  (2042 ms)
+  {
+      "error": {
+          "code": "address_not_found",
+          "message": "A delivery address could not be resolved."
+      },
+      "debug": null
+  }
+
+========================================================================
+[PH-05]  layer=phone_extractor
+------------------------------------------------------------------------
+  INPUT : (0912) 345.678
+  STATUS: 422  (2039 ms)
+  {
+      "error": {
+          "code": "address_not_found",
+          "message": "A delivery address could not be resolved."
+      },
+      "debug": null
+  }
+
+========================================================================
+[PH-06]  layer=phone_extractor
+------------------------------------------------------------------------
+  INPUT : 091234567
+  STATUS: 422  (2074 ms)
+  {
+      "error": {
+          "code": "address_not_found",
+          "message": "A delivery address could not be resolved."
+      },
+      "debug": null
+  }
+
+========================================================================
+[PH-07]  layer=phone_extractor
+------------------------------------------------------------------------
+  INPUT : 09123456789
+  STATUS: 422  (2043 ms)
+  {
+      "error": {
+          "code": "address_not_found",
+          "message": "A delivery address could not be resolved."
+      },
+      "debug": null
+  }
+
+========================================================================
+[PH-08]  layer=phone_extractor
+------------------------------------------------------------------------
+  INPUT : 02438222222
+  STATUS: 422  (2054 ms)
+  {
+      "error": {
+          "code": "address_not_found",
+          "message": "A delivery address could not be resolved."
+      },
+      "debug": null
+  }
+
+========================================================================
+[PH-09]  layer=phone_extractor
+------------------------------------------------------------------------
+  INPUT : 0123456789
+  STATUS: 422  (2059 ms)
+  {
+      "error": {
+          "code": "address_not_found",
+          "message": "A delivery address could not be resolved."
+      },
+      "debug": null
+  }
+
+========================================================================
+[PH-10]  layer=phone_extractor
+------------------------------------------------------------------------
+  INPUT : nhà số 0987654321, giao buổi chiều
+  STATUS: 422  (2069 ms)
+  {
+      "error": {
+          "code": "address_not_found",
+          "message": "A delivery address could not be resolved."
+      },
+      "debug": null
+  }
+
+========================================================================
+[PH-11]  layer=phone_extractor
+------------------------------------------------------------------------
+  INPUT : mã đơn: 0912345678
+  STATUS: 422  (2052 ms)
+  {
+      "error": {
+          "code": "address_not_found",
+          "message": "A delivery address could not be resolved."
+      },
+      "debug": null
+  }
+
+========================================================================
+[PH-12]  layer=phone_extractor
+------------------------------------------------------------------------
+  INPUT : Lan 0901234567, liên hệ shop 0987654321
+  STATUS: 422  (2060 ms)
+  {
+      "error": {
+          "code": "address_not_found",
+          "message": "A delivery address could not be resolved."
+      },
+      "debug": null
+  }
+
+========================================================================
+[PH-13]  layer=phone_extractor
+------------------------------------------------------------------------
+  INPUT : 0901234567 hoặc 0987654321 đều được
+  STATUS: 422  (2057 ms)
+  {
+      "error": {
+          "code": "address_not_found",
+          "message": "A delivery address could not be resolved."
+      },
+      "debug": null
+  }
+
+========================================================================
+[PH-14]  layer=phone_extractor
+------------------------------------------------------------------------
+  INPUT : Không có số nào trong text
+  STATUS: 422  (2032 ms)
+  {
+      "error": {
+          "code": "address_not_found",
+          "message": "A delivery address could not be resolved."
+      },
+      "debug": null
+  }
+
+========================================================================
+[PH-01-full]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : Nguyễn Văn Bình, 0912 345 678, 45 Lê Lợi Q1 HCM
+  STATUS: 200  (2078 ms)
+  {
+      "recipient_name": "Nguyễn Văn Bình",
+      "phone_number": "0912345678",
+      "address_raw": "45 Lê Lợi Q1 HCM",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[PH-02-full]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : Trần Thị Lan, 0912-345-678, 22 Nguyễn Huệ Q1 HCM
+  STATUS: 200  (2054 ms)
+  {
+      "recipient_name": "Trần Thị Lan",
+      "phone_number": "0912345678",
+      "address_raw": "22 Nguyễn Huệ Q1 HCM",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[PH-03-full]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : Lê Minh Khoa, +84912345678, 88 Đinh Tiên Hoàng Q.Bình Thạnh
+  STATUS: 200  (2065 ms)
+  {
+      "recipient_name": "Lê Minh Khoa",
+      "phone_number": "0912345678",
+      "address_raw": "88 Đinh Tiên Hoàng Q.Bình Thạnh",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[PH-04-full]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : Phạm Thu Hà, 84912345678, 15 Võ Thị Sáu Q3 HCM
+  STATUS: 200  (2090 ms)
+  {
+      "recipient_name": "Phạm Thu Hà",
+      "phone_number": "0912345678",
+      "address_raw": "15 Võ Thị Sáu Q3 HCM",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[PH-05-full]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : Hoàng Văn Tùng, (0912) 345.678, 50 Ngô Gia Tự Q10 HCM
+  STATUS: 200  (2060 ms)
+  {
+      "recipient_name": "Hoàng Văn Tùng",
+      "phone_number": "0912345678",
+      "address_raw": "50 Ngô Gia Tự Q10 HCM",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[PH-06-full]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : giao tới 22 Hai Bà Trưng Q1, liên hệ 091234567
+  STATUS: 200  (2033 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "22 Hai Bà Trưng Q1",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[PH-07-full]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : ship cho anh Hùng, 09123456789, 33 Lý Tự Trọng Q1 HCM
+  STATUS: 200  (2062 ms)
+  {
+      "recipient_name": "Hùng",
+      "phone_number": null,
+      "address_raw": "33 Lý Tự Trọng Q1 HCM",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[PH-08-full]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : liên hệ 02438222222, địa chỉ 5 Phan Chu Trinh Hoàn Kiếm Hà Nội
+  STATUS: 200  (2066 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "5 Phan Chu Trinh Hoàn Kiếm Hà Nội",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[PH-09-full]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : giao hàng cho chị Mai, 0123456789, 77 Trần Phú Hà Đông Hà Nội
+  STATUS: 200  (2067 ms)
+  {
+      "recipient_name": "Mai",
+      "phone_number": null,
+      "address_raw": "77 Trần Phú Hà Đông Hà Nội",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[PH-10-full]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : giao đến nhà số 0987654321, đường Nguyễn Trãi, Thanh Xuân, Hà Nội
+  STATUS: 200  (2044 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "nhà số 0987654321, đường Nguyễn Trãi, Thanh Xuân, Hà Nội",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[PH-11-full]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : mã đơn: 0912345678, ship tới 45 Lê Lợi Q1 HCM
+  STATUS: 200  (2054 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "45 Lê Lợi Q1 HCM",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[PH-12-full]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : Lan 0901234567, liên hệ shop 0987654321, giao tới 88 Nguyễn Du Q1 HCM
+  STATUS: 200  (2043 ms)
+  {
+      "recipient_name": "Lan",
+      "phone_number": "0901234567",
+      "address_raw": "88 Nguyễn Du Q1 HCM",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[PH-13-full]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : 0901234567 hoặc 0987654321 đều được, ship tới 45 Lê Lợi Q1 HCM
+  STATUS: 200  (2087 ms)
+  {
+      "recipient_name": null,
+      "phone_number": "0901234567",
+      "address_raw": "45 Lê Lợi Q1 HCM",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[PH-14-full]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : Nguyễn Văn Nam, không có số điện thoại, giao tới 22 Trần Hưng Đạo Hoàn Kiếm Hà Nội
+  STATUS: 200  (2079 ms)
+  {
+      "recipient_name": "Nguyễn Văn Nam",
+      "phone_number": null,
+      "address_raw": "22 Trần Hưng Đạo Hoàn Kiếm Hà Nội",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[R-01]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : Nguyễn Văn A, 0912345678, 45 Lê Lợi Q1 HCM, giao buổi sáng
+  STATUS: 200  (2053 ms)
+  {
+      "recipient_name": "Nguyễn Văn A",
+      "phone_number": "0912345678",
+      "address_raw": "45 Lê Lợi Q1 HCM",
+      "note": "giao buổi sáng",
+      "debug": null
+  }
+
+========================================================================
+[R-02]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : 22 Hai Bà Trưng
+  STATUS: 200  (2053 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "22 Hai Bà Trưng",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[R-03]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : 0912345867, giao tới 22 Hai Bà Trưng
+  STATUS: 200  (2072 ms)
+  {
+      "recipient_name": null,
+      "phone_number": "0912345867",
+      "address_raw": "22 Hai Bà Trưng",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[R-04]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : tên Lan, sdt 0912345678
+  STATUS: 422  (2066 ms)
+  {
+      "error": {
+          "code": "address_not_found",
+          "message": "A delivery address could not be resolved."
+      },
+      "debug": null
+  }
+
+========================================================================
+[R-07]  layer=parser_api  [generated]
+------------------------------------------------------------------------
+  INPUT : aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  [...+4881 chars]
+  STATUS: 400  (2049 ms)
+  {
+      "error": {
+          "code": "input_too_long",
+          "message": "Input text exceeds the maximum allowed length."
+      },
+      "debug": null
+  }
+
+========================================================================
+[R-08]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : <script>alert('xss')</script> ship tới 45 Lê Lợi Q1
+  STATUS: 200  (2053 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "45 Lê Lợi Q1",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[E-01]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : giao cho mình trước 10h sáng nhé, 45 Lê Lợi Q1
+  STATUS: 200  (2058 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "45 Lê Lợi Q1",
+      "note": "trước 10h sáng",
+      "debug": null
+  }
+
+========================================================================
+[E-02]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : Text từ Facebook :v :3 😀 😆 ship tới 22 Nguyễn Huệ Q1 nhé
+  STATUS: 200  (2095 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "22 Nguyễn Huệ Q1",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[E-03]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : Số nhà TT08, KĐT Vinhomes Smart City, Nam Từ Liêm, Hà Nội
+  STATUS: 200  (2073 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "Số nhà TT08, KĐT Vinhomes Smart City, Nam Từ Liêm, Hà Nội",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[E-04]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : Trường THPT Chu Văn An, Tây Hồ, Hà Nội
+  STATUS: 200  (2062 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "Trường THPT Chu Văn An, Tây Hồ, Hà Nội",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[E-05]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : lấy hàng ở 12 Lý Thái Tổ, giao tới 88 Nguyễn Du
+  STATUS: 200  (2064 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "12 Lý Thái Tổ",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[E-06]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : Lan ơi ship cho mình 1 cái váy size S nha, mình ở 22 Ngô Quyền, phone mình 0901234567
+  STATUS: 200  (2093 ms)
+  {
+      "recipient_name": null,
+      "phone_number": "0901234567",
+      "address_raw": "22 Ngô Quyền",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[RC6-01]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : giao tới Q.Bình Thạnh HCM
+  STATUS: 200  (2056 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "Q.Bình Thạnh HCM",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[RC6-02]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : ship đến P.14 Q.10 TP.HCM
+  STATUS: 200  (2059 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "P.14 Q.10 TP.HCM",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[RC6-03]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : giao ở HN, Đống Đa, Hàng Bông
+  STATUS: 200  (2075 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "H",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[RC6-04]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : địa chỉ TP.HCM, Gò Vấp, Phan Văn Trị
+  STATUS: 200  (2089 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "TP.HCM, Gò Vấp, Phan Văn Trị",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[RC6-05]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : ship tới Thủ Đức, Kha Vạn Cân
+  STATUS: 200  (2071 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "Thủ Đức, Kha Vạn Cân",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[RC6-06]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : giao tới KĐT Vinhomes Ocean Park Gia Lâm Hà Nội
+  STATUS: 200  (2062 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "KĐT Vinhomes Ocean Park Gia Lâm Hà Nội",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[RC6-07]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : địa chỉ CC The Manor Bình Thạnh HCM
+  STATUS: 200  (2069 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "CC The Manor Bình Thạnh HCM",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[RC6-08]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : giao tại tòa Landmark 81 Bình Thạnh
+  STATUS: 200  (2057 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "tòa Landmark 81 Bình Thạnh",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[RC6-09]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : ship qua Q.12, Tân Thới Nhất
+  STATUS: 200  (2074 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "Q.12, Tân Thới Nhất",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[RC6-10]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : giao P.25 Bình Thạnh HCM
+  STATUS: 200  (2063 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "P.25 Bình Thạnh HCM",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[RC6-11]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : đến Nam Từ Liêm, Hà Nội
+  STATUS: 200  (2060 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "Nam Từ Liêm, Hà Nội",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[RC6-12]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : ship Bắc Từ Liêm HN
+  STATUS: 200  (2054 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "Bắc Từ Liêm HN",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[RC6-13]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : giao tới Q.Phú Nhuận, Nguyễn Kiệm
+  STATUS: 200  (2070 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "Q.Phú Nhuận, Nguyễn Kiệm",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[RC6-14]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : địa chỉ Royal City Thanh Xuân Hà Nội
+  STATUS: 200  (2047 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "Royal City Thanh Xuân Hà Nội",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+[RC6-15]  layer=parser_api
+------------------------------------------------------------------------
+  INPUT : ship tới TPHCM Quận 7 Phú Mỹ Hưng
+  STATUS: 200  (2045 ms)
+  {
+      "recipient_name": null,
+      "phone_number": null,
+      "address_raw": "TPHCM Quận 7 Phú Mỹ Hưng",
+      "note": null,
+      "debug": null
+  }
+
+========================================================================
+Tổng: 65 test cases  |  Server Error (5xx): 0
+========================================================================

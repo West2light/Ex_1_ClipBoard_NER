@@ -1,0 +1,19 @@
+[agents]
+max_threads = 4
+max_depth = 1
+
+[agents.api-architect]
+description = "Reviews and evolves the hybrid Clipboard Parsing API architecture and service contracts."
+config_file = "./agents/api-architect.toml"
+
+[agents.api-worker]
+description = "Implements approved Clipboard Parsing API tasks and focused regression tests."
+config_file = "./agents/api-worker.toml"
+
+[agents.ner-evaluator]
+description = "Evaluates XLM-R NER behavior for PER, ADDR, and NOTE, including raw-versus-masked inference."
+config_file = "./agents/ner-evaluator.toml"
+
+[agents.phone-reviewer]
+description = "Reviews Vietnamese phone extraction, normalization, context filtering, ranking, masking, and phone-related regression tests."
+config_file = "./agents/phone-reviewer.toml"

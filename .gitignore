@@ -1,0 +1,31 @@
+# Environment
+.env
+.venv/
+venv/
+env/
+.vscode/
+.Python
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Model artifacts (large binary files)
+model/ner_xlmr_clipboard/
+model/xlmr_ner_onnx_int8/
+model/phobert_ner_onnx_int8/
+model/*.zip
+
+#Documents
+adds/
+# Legacy scripts
+request_glm_4.5_free.py
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
