@@ -5,6 +5,7 @@ from unittest.mock import MagicMock
 from httpx import AsyncClient, ASGITransport
 
 from app.main import create_app
+from app.core.config import settings
 from app.services.ner_service import NERService
 from app.services.parser_service import ParserService
 
@@ -36,7 +37,11 @@ async def test_ready_200_when_model_ready():
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         resp = await client.get("/ready")
     assert resp.status_code == 200
-    assert resp.json()["status"] == "ready"
+    body = resp.json()
+    assert body["status"] == "ready"
+    assert body["model_family"] == settings.MODEL_FAMILY
+    assert body["model_path"] == settings.resolved_model_path
+    assert body["use_phobert"] == settings.use_phobert
 
 
 @pytest.mark.asyncio

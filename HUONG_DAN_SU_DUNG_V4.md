@@ -332,3 +332,60 @@ SLA: p95 ≤ 2000ms (R-06).
 > uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 2
 > ```
 > Mỗi worker tải model riêng (~210MB RAM mỗi worker).
+---
+
+## Benchmark P99
+
+Script `scripts/view_outputs.py` cÃ³ thÃªm chÃ© Ä‘á»™ benchmark:
+
+- `--benchmark-mode rps`: open-loop, bắn `--target-rps 100`
+- `--benchmark-mode ccu`: closed-loop, chạy `--ccu 100`
+- `--benchmark-mode both`: chạy cả hai
+
+Ví dụ:
+
+```bash
+python scripts/view_outputs.py ^
+  --benchmark ^
+  --url http://localhost:8001 ^
+  --layer parser_api ^
+  --benchmark-mode both ^
+  --target-rps 100 ^
+  --ccu 100 ^
+  --duration 60 ^
+  --warmup 15
+```
+
+Kết quả được ghi ở:
+
+- `adds/output/view_outputs_*.log`
+- `adds/output/view_outputs_benchmark_*.json`
+
+Metric chính là latency end-to-end `p99`.
+
+---
+
+## Benchmark Feedback Mode
+
+Use this mode for "Uu tien 1 - Tach loi input khoi loi server" when a benchmark run has many `400/422` responses.
+
+```bash
+python scripts/view_outputs.py ^
+  --benchmark ^
+  --benchmark-mode feedback ^
+  --url http://localhost:8001 ^
+  --layer parser_api ^
+  --timeout 15
+```
+
+Classification:
+
+- `400/422`: `input_error`
+- `5xx`: `server_error`
+- timeout/network exception: `exception`
+- `2xx`: `success`
+
+Outputs:
+
+- markdown audit append: `adds/feedback_benchmark.md`
+- JSON report: `adds/output/view_outputs_benchmark_*.json`

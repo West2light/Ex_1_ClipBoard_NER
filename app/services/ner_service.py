@@ -21,8 +21,16 @@ logger = logging.getLogger(__name__)
 
 VALID_LABELS = {"O", "B-PER", "I-PER", "B-ADDR", "I-ADDR", "B-NOTE", "I-NOTE"}
 
-# The quantised ONNX file produced by the notebook is always named this.
-_ONNX_FILENAME = "model_quantized.onnx"
+# Supported ONNX artifact names, ordered by preference.
+_ONNX_FILENAMES = ("model_quantized.onnx", "model.onnx")
+
+
+def _resolve_onnx_path(model_path: str) -> Optional[str]:
+    for filename in _ONNX_FILENAMES:
+        candidate = os.path.join(model_path, filename)
+        if os.path.exists(candidate):
+            return candidate
+    return None
 
 
 @dataclass
@@ -53,9 +61,13 @@ class NERService:
             logger.warning("NERService: model_path does not exist: %s", self.model_path)
             return
 
-        onnx_path = os.path.join(self.model_path, _ONNX_FILENAME)
-        if not os.path.exists(onnx_path):
-            logger.warning("NERService: ONNX file not found: %s", onnx_path)
+        onnx_path = _resolve_onnx_path(self.model_path)
+        if onnx_path is None:
+            logger.warning(
+                "NERService: ONNX file not found in %s; expected one of: %s",
+                self.model_path,
+                ", ".join(_ONNX_FILENAMES),
+            )
             return
 
         try:

@@ -9,7 +9,7 @@ import pytest
 import numpy as np
 from unittest.mock import MagicMock, patch
 
-from app.services.ner_service import NERService, TokenRow
+from app.services.ner_service import NERService, TokenRow, _resolve_onnx_path
 
 
 # ---------------------------------------------------------------------------
@@ -81,6 +81,33 @@ def ner_service_mocked():
 # ---------------------------------------------------------------------------
 # Tests: is_ready
 # ---------------------------------------------------------------------------
+
+
+def test_resolve_onnx_path_prefers_quantized(tmp_path):
+    model_dir = tmp_path / "model"
+    model_dir.mkdir()
+    quantized = model_dir / "model_quantized.onnx"
+    plain = model_dir / "model.onnx"
+    quantized.write_bytes(b"quantized")
+    plain.write_bytes(b"plain")
+
+    assert _resolve_onnx_path(str(model_dir)) == str(quantized)
+
+
+def test_resolve_onnx_path_falls_back_to_model_onnx(tmp_path):
+    model_dir = tmp_path / "model"
+    model_dir.mkdir()
+    plain = model_dir / "model.onnx"
+    plain.write_bytes(b"plain")
+
+    assert _resolve_onnx_path(str(model_dir)) == str(plain)
+
+
+def test_resolve_onnx_path_missing_returns_none(tmp_path):
+    model_dir = tmp_path / "model"
+    model_dir.mkdir()
+
+    assert _resolve_onnx_path(str(model_dir)) is None
 
 
 def test_is_ready_missing_model():

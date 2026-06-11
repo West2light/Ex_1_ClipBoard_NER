@@ -36,3 +36,5 @@ class HealthResponse(BaseModel):
 class ReadyResponse(BaseModel):
     status: str
     model_family: str
+    model_path: str
+    use_phobert: bool

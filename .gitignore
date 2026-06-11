@@ -18,7 +18,7 @@ model/ner_xlmr_clipboard/
 model/xlmr_ner_onnx_int8/
 model/phobert_ner_onnx_int8/
 model/*.zip
-
+model/
 #Documents
 adds/
 # Legacy scripts

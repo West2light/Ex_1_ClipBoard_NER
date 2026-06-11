@@ -34,7 +34,12 @@ async def ready(request: Request):
                 "debug": None,
             },
         )
-    return ReadyResponse(status="ready", model_family=settings.MODEL_FAMILY)
+    return ReadyResponse(
+        status="ready",
+        model_family=settings.MODEL_FAMILY,
+        model_path=settings.resolved_model_path,
+        use_phobert=settings.use_phobert,
+    )
 
 
 @router.post("/parse", response_model=ParseResponse, tags=["Parse"])
